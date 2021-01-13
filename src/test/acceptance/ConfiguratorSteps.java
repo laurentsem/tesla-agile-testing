@@ -39,7 +39,6 @@ public class ConfiguratorSteps {
     public void je_suis_sur_la_page_du_modèle_Tesla_Model_S() throws Throwable {
         driver.get("https://www.tesla.com/fr_fr/models");
         String parentWindowHandle = driver.getWindowHandle();
-        System.out.println(parentWindowHandle);
     }
 
     @When("^je clique sur le bouton commander$")
@@ -65,6 +64,83 @@ public class ConfiguratorSteps {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Given("^je suis sur la page de configuration Tesla Model S$")
+    public void je_suis_sur_la_page_de_configuration_Tesla_Model_S() throws Throwable {
+        driver.get("https://www.tesla.com/fr_fr/models/design#battery");
+    }
+
+    @Then("^le prix affiché par défaut est de \"([^\"]*)\" euros par mois$")
+    public void le_prix_affiché_par_défaut_est_de_euros_par_mois(String arg1) throws Throwable {
+        WebElement price = driver.findElement(By.cssSelector("p[class='finance-item--price finance-item--price-before-savings']"));
+        assertThat(price.getText(), containsString(arg1));
+    }
+
+    @When("^je clique sur le bouton \"([^\"]*)\"$")
+    public void je_clique_sur_le_bouton(String arg1) throws Throwable {
+        Actions action = new Actions(driver);
+        WebElement modelButton = driver.findElement(By.cssSelector("div[class='group--options_block m3-animate--all']"));
+        if(modelButton.getAttribute("aria-label").equals(arg1)) {
+            action.click(modelButton);
+            action.build().perform();
+        }
+    }
+
+    @Then("^le prix LOA est \"([^\"]*)\", \"([^\"]*)\" d'économies de carburant$")
+    public void le_prix_LOA_est_d_économies_de_carburant(String arg1, String arg2) throws Throwable {
+        WebElement price = driver.findElement(By.xpath("/html/body/div[1]/div/main/div/div/div[3]/div/div/div/div[2]/div[1]/div/p"));
+        WebElement savingCarburant = driver.findElement(By.xpath("/html/body/div[1]/div/main/div/div/div[3]/div/div/div/div[2]/div[2]/p"));
+        System.out.println("Prix LOA:" + price.getText());
+        System.out.println("Economies carburant:" + savingCarburant.getText());
+        assertThat(price.getText(), containsString(arg1));
+        assertThat(savingCarburant.getText(), containsString(arg2));
+    }
+
+    @When("^je clique sur Voir détails$")
+    public void je_clique_sur_Voir_détails() throws Throwable {
+        try {
+            Actions action = new Actions(driver);
+            WebElement detailsButton = driver.findElement(By.className("finance-content--modal"));
+            action.click(detailsButton);
+            action.build().perform();
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Then("^le montant total est de \"([^\"]*)\"$")
+    public void le_montant_total_est_de(String arg1) throws Throwable {
+        WebElement totalPrice = driver.findElement(By.id("totalLeaseAmount"));
+        assertThat(totalPrice.getAttribute("value"), containsString(arg1));
+    }
+
+//    @When("^je clique sur l'onglet Pilotage Automatique$")
+//    public void je_clique_sur_l_onglet_Pilotage_Automatique() throws Throwable {
+//        Actions action = new Actions(driver);
+//        WebElement autoPilot = driver.findElement(By.className("packages-options--nav-item"));
+//        driver.get("https://www.tesla.com/fr_fr/models/design#autopilot");
+//        if(autoPilot.getAttribute("arial-label").equals("autopilot")) {
+//            action.click(autoPilot);
+//            action.build().perform();
+//        }
+//    }
+
+    @When("^je clique sur le bouton Ajouter cette option$")
+    public void je_clique_sur_le_bouton_Ajouter_cette_option() throws Throwable {
+        driver.get("https://www.tesla.com/fr_fr/models/design#autopilot");
+        Actions action = new Actions(driver);
+        WebElement addOption = driver.findElement(By.cssSelector("div[class='group--options_card--checkbox--container']"));
+        action.click(addOption);
+        action.build().perform();
+    }
+
+    @Then("^le prix affiché par défaut \"([^\"]*)\" euros augmente de \"([^\"]*)\" euros$")
+    public void le_prix_affiché_par_défaut_euros_augmente_de_euros(String arg1, String arg2) throws Throwable {
+        WebElement afterPrice = driver.findElement(By.cssSelector("p[class='finance-item--price finance-item--price-before-savings']"));
+        int priceDiff = Integer.parseInt(arg1) + Integer.parseInt(arg2);
+        assertThat(afterPrice.getText(), containsString(String.valueOf(priceDiff)));
     }
 
 
