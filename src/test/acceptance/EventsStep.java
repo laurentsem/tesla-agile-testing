@@ -79,14 +79,14 @@ public class EventsStep {
     public void je_suis_sur_la_page_events() throws Throwable {
         driver.get("https://www.tesla.com/fr_FR/events");
     }
-    @Then("^je choisi une ville$")
-    public void je_choisi_une_ville() throws Throwable {
+    @Then("^je choisi une ville \"([^\"]*)\"$")
+    public void je_choisi_une_ville(String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
         WebElement inputCity = driver.findElement(By.id("edit-geoautocomplete"));
         try{
             Thread.sleep(5000);
             Actions actions = new Actions(driver);
-            actions.sendKeys(inputCity,"Hong Kong");
+            actions.sendKeys(inputCity,arg1);
             actions.build().perform();
             Thread.sleep(1000);
             Actions actions1 = new Actions(driver);
@@ -150,7 +150,7 @@ public class EventsStep {
     @Then("^je saisi le prénom \"([^\"]*)\"$")
     public void je_saisi_le_prénom(String arg1) throws Throwable {
         try {
-            Thread.sleep(6000);
+            Thread.sleep(2000);
             WebElement form = driver.findElement(By.id("test-drive-form"));
             WebElement prenom = form.findElement(By.id("edit-firstname-td"));
             Actions action = new Actions(driver);
@@ -233,6 +233,37 @@ public class EventsStep {
         redMessage.isDisplayed();
         assertEquals(arg1, redMessage.getAttribute("innerHTML"));
     }
+
+    @Then("^je vérifie la ville du premier événement affiché est \"([^\"]*)\"$")
+    public void je_vérifie_la_ville_du_premier_événement_affiché_est(String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        try{
+            Thread.sleep(2000);
+            WebElement location = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[1]/div[7]/div/div/div[2]/div/div/div/div[2]/div[1]"));
+            assertThat(location.getAttribute("innerHTML"),containsString(arg1));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @When("^je clique sur le bouton d'inscription$")
+    public void je_clique_sur_le_bouton_d_inscription() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        Actions actions = new Actions(driver);
+        WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[1]/div[7]/div/div/div[2]/div[2]/div/div/div[2]/a"));
+        actions.click(button);
+        actions.build().perform();
+    }
+
+    @Then("^je vérifie que je suis rédirigé sur le lien \"([^\"]*)\"$")
+    public void je_vérifie_que_je_suis_rédirigé_sur_le_lien(String arg1) throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        String currentUrl = driver.getCurrentUrl();
+        assertThat(currentUrl,containsString(arg1));
+    }
+
+
 
 
 
