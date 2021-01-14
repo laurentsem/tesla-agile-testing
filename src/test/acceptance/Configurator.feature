@@ -18,7 +18,7 @@ Feature: Configurateur Model S
 #      | modele                | prixLOA | carburantEconomie | montantTotal |
 #      | Grande Autonomie Plus | 768     | 108               | 94 841       |
 #      | Performance           | 969     | 108               | 114 052      |
-#
+
 #  Scenario: Vérification hausse de prix avec Pilote auto
 #    Given je suis sur la page de configuration Tesla Model S
 #    # When je clique sur l'onglet Pilotage Automatique
@@ -29,5 +29,5 @@ Feature: Configurateur Model S
     Given je suis sur la page de configuration Tesla Model S
     When je clique sur le logo Tesla en haut à gauche
     Then je suis sur la page d'accueil
-    When je clique sur "Localisations"
-    Then j'arrive sur la page "https://www.tesla.com/fr_FR/findus/list"
+#    When je clique sur "Localisations"
+#    Then j'arrive sur la page "https://www.tesla.com/fr_FR/findus/list"

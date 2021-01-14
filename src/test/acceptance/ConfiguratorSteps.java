@@ -152,6 +152,17 @@ public class ConfiguratorSteps {
         driver.get(href+"fr_fr");
     }
 
+    @Then("^j'arrive sur la page \"([^\"]*)\"$")
+    public void j_arrive_sur_la_page(String arg1) throws Throwable {
+        try {
+            Thread.sleep(3000);
+            String currentUrl = driver.getCurrentUrl();
+            assertEquals(arg1, currentUrl);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @When("^je clique sur \"([^\"]*)\"$")
     public void je_clique_sur(String arg1) throws Throwable {
         Actions actions = new Actions(driver);
@@ -169,16 +180,6 @@ public class ConfiguratorSteps {
         }
     }
 
-    @Then("^j'arrive sur la page \"([^\"]*)\"$")
-    public void j_arrive_sur_la_page(String arg1) throws Throwable {
-        try {
-            Thread.sleep(3000);
-            String currentUrl = driver.getCurrentUrl();
-            assertEquals(arg1, currentUrl);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 
