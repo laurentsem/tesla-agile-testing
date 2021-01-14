@@ -263,12 +263,6 @@ public class EventsStep {
         assertThat(currentUrl,containsString(arg1));
     }
 
-
-
-
-
-
-
     @After
     public void afterScenario() {
         try{
