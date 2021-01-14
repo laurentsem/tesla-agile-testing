@@ -6,6 +6,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -142,6 +143,46 @@ public class ConfiguratorSteps {
         int priceDiff = Integer.parseInt(arg1) + Integer.parseInt(arg2);
         assertThat(afterPrice.getText(), containsString(String.valueOf(priceDiff)));
     }
+
+    @When("^je clique sur le logo Tesla en haut à gauche$")
+    public void je_clique_sur_le_logo_Tesla_en_haut_à_gauche() throws Throwable {
+       // Actions actions = new Actions(driver);
+        WebElement logo = driver.findElement(By.cssSelector("a[class='tsla-header-main--logo tds-icon tds-icon-wordmark']"));
+        String href = logo.getAttribute("href");
+        driver.get(href+"fr_fr");
+    }
+
+    @When("^je clique sur \"([^\"]*)\"$")
+    public void je_clique_sur(String arg1) throws Throwable {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0, 4000)");
+        Actions actions = new Actions(driver);
+        WebElement footer = driver.findElement(By.cssSelector("ol[class='tds-footer-meta tds-footer--centered tds-footer-nav tds-list']"));
+        List<WebElement> listFooter = footer.findElements(By.tagName("li"));
+        for (WebElement li : listFooter) {
+            WebElement a = li.findElement(By.tagName("a"));
+            System.out.println("a texte = " + a.getAttribute("innerHTML") );
+            System.out.println(arg1);
+            if(a.getAttribute("innerHTML").equals(arg1)){
+                System.out.println("a texte dans if = " + a.getAttribute("innerHTML") );
+                actions.click(a);
+                actions.build().perform();
+            }
+        }
+    }
+
+    @Then("^j'arrive sur la page \"([^\"]*)\"$")
+    public void j_arrive_sur_la_page(String arg1) throws Throwable {
+        try {
+            Thread.sleep(3000);
+            String currentUrl = driver.getCurrentUrl();
+            System.out.println("url = " + currentUrl);
+            assertEquals(arg1, currentUrl);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @After
