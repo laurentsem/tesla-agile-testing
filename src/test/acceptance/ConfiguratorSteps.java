@@ -5,13 +5,12 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.en_old.Ac;
 import gherkin.lexer.Th;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class ConfiguratorSteps {
 
     @Before
     public void beforeScenario() {
-        System.setProperty("webdriver.chrome.driver","/Library/Java/JUNIT/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/Library/Java/JUNIT/chromedriver");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         driver = new ChromeDriver();
@@ -55,8 +54,7 @@ public class ConfiguratorSteps {
     public void j_accède_à_la_page_de_configuration_Tesla_Model_S() throws Throwable {
         try {
             Thread.sleep(6000);
-            for(String winHandle : driver.getWindowHandles())
-            {
+            for (String winHandle : driver.getWindowHandles()) {
                 driver.switchTo().window(winHandle);
             }
             String configUrl = driver.getCurrentUrl();
@@ -83,7 +81,7 @@ public class ConfiguratorSteps {
     public void je_clique_sur_le_bouton(String arg1) throws Throwable {
         Actions action = new Actions(driver);
         WebElement modelButton = driver.findElement(By.cssSelector("div[class='group--options_block m3-animate--all']"));
-        if(modelButton.getAttribute("aria-label").equals(arg1)) {
+        if (modelButton.getAttribute("aria-label").equals(arg1)) {
             action.click(modelButton);
             action.build().perform();
         }
@@ -91,7 +89,7 @@ public class ConfiguratorSteps {
 
     @Then("^le prix LOA est \"([^\"]*)\", \"([^\"]*)\" d'économies de carburant$")
     public void le_prix_LOA_est_d_économies_de_carburant(String arg1, String arg2) throws Throwable {
-        try{
+        try {
             Thread.sleep(5000);
             WebElement price = driver.findElement(By.xpath("/html/body/div[1]/div/main/div/div/div[3]/div/div/div/div[2]/div[1]/div/p"));
             WebElement savingCarburant = driver.findElement(By.xpath("/html/body/div[1]/div/main/div/div/div[3]/div/div/div/div[2]/div[2]/p"));
@@ -181,21 +179,40 @@ public class ConfiguratorSteps {
 
     @When("^je clique sur \"([^\"]*)\"$")
     public void je_clique_sur(String arg1) throws Throwable {
-        try{
+        try {
             Thread.sleep(5000);
-            Actions actions = new Actions(driver);
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            WebElement FOOTER = driver.findElement(By.tagName("footer"));
-            js.executeScript("arguments[0].style='display: block;'", FOOTER);
-            WebElement footer = driver.findElement(By.cssSelector("ol[class='tds-footer-meta tds-footer--centered tds-footer-nav tds-list']"));
-            List<WebElement> listFooter = footer.findElements(By.tagName("li"));
-            for (WebElement li : listFooter) {
-                WebElement a = li.findElement(By.tagName("a"));
-                if(a.getAttribute("innerHTML").equals(arg1)){
-                    actions.click(a);
-                    actions.build().perform();
-                }
+//            Actions actions = new Actions(driver);
+//            actions.sendKeys(Keys.ARROW_DOWN).build();
+//            actions.perform();
+            try {
+                Thread.sleep(3000);
+                Actions click = new Actions(driver);
+                WebElement test = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/div/section/div[1]"));
+                click.click(test);
+                click.build().perform();
+                Actions actionProvider = new Actions(driver);
+                Action keydown = actionProvider.sendKeys(Keys.END).build();
+                keydown.perform();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            try {
+                Thread.sleep(3000);
+                WebElement footer = driver.findElement(By.cssSelector("ol[class='tds-footer-meta tds-footer--centered tds-footer-nav tds-list']"));
+                List<WebElement> listFooter = footer.findElements(By.tagName("li"));
+                for (WebElement li : listFooter) {
+                    WebElement a = li.findElement(By.tagName("a"));
+                    if (a.getAttribute("innerHTML").equals(arg1)) {
+                        System.out.println("coucou");
+                        Actions actions = new Actions(driver);
+                        actions.click(a);
+                        actions.build().perform();
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
