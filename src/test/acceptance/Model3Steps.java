@@ -28,7 +28,7 @@ public class Model3Steps {
 
     @Before
     public void beforeScenario() {
-        System.setProperty("webdriver.chrome.driver","/Library/Java/JUNIT/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/Library/Java/JUNIT/chromedriver");
         // ChromeOptions options = new ChromeOptions();
         //options.addArguments("--headless");
         driver = new ChromeDriver();
@@ -46,8 +46,8 @@ public class Model3Steps {
     public void je_sélectionne(String arg1) throws Throwable {
         WebElement caracteristiques = driver.findElement(By.className("side_nav-container"));
         List<WebElement> li = caracteristiques.findElements(By.tagName("li"));
-        for(WebElement e : li){
-            if (e.getAttribute("data-title").equals(arg1)){
+        for (WebElement e : li) {
+            if (e.getAttribute("data-title").equals(arg1)) {
                 Actions actions = new Actions(driver);
                 actions.click(e);
                 actions.build().perform();
@@ -60,8 +60,8 @@ public class Model3Steps {
         Actions actions = new Actions(driver);
         WebElement gamme = driver.findElement(By.cssSelector("nav[class='tds-tab-list tcl-tabs__list']"));
         List<WebElement> a = gamme.findElements(By.tagName("a"));
-        for (WebElement e : a){
-            if (e.getAttribute("data-gtm-interaction").equals(arg1)){
+        for (WebElement e : a) {
+            if (e.getAttribute("data-gtm-interaction").equals(arg1)) {
                 actions.click(e);
                 actions.build().perform();
             }
@@ -70,33 +70,70 @@ public class Model3Steps {
 
     @When("^le poids est \"([^\"]*)\"$")
     public void le_poids_est(String arg1) throws Throwable {
-        WebElement poids = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[1]/div[2]/ul/li[1]/span[2]"));
-        String poids2 = poids.getAttribute("innerHTML");
-        System.out.println("Avant: " + poids2);
-        poids2.replaceAll("&nbsp;","");
-        System.out.println("Après: " + poids2);
+        WebElement poids;
+        String poids2;
+        System.out.println(arg1);
+        switch (arg1) {
+            case "1,844 kg":
+                poids = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[2]/div[2]/ul/li[1]/span[2]"));
+                break;
+            case "1,745 kg":
+                poids = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[3]/div[2]/ul/li[1]/span[2]"));
+                break;
+            default:
+                poids = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[1]/div[2]/ul/li[1]/span[2]"));
+                break;
+
+        }
+        poids2 = poids.getAttribute("innerHTML");
+        poids2 = poids2.replaceAll("&nbsp;", " ");
         assertEquals(arg1, poids2);
+
     }
 
     @When("^l'accélération est \"([^\"]*)\"$")
     public void l_accélération_est(String arg1) throws Throwable {
-        WebElement acceleration = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[1]/div[2]/ul/li[1]/span[2]"));
-        String acceleration2 = acceleration.getAttribute("innerHTML");
-        acceleration2.replace("&nbsp;","");
-        assertThat(acceleration2,containsString(arg1));
+        WebElement acceleration;
+        String acceleration2;
+        switch (arg1) {
+            case "4,4 secondes":
+                acceleration = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[2]/div[1]/ul/li[2]"));
+                break;
+            case "5,6 secondes":
+                acceleration = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[3]/div[1]/ul/li[2]"));
+                break;
+            default:
+                acceleration = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[1]/div[1]/ul/li[2]"));
+                break;
+        }
+        acceleration2 = acceleration.getAttribute("innerHTML");
+        acceleration2 = acceleration2.replace("&nbsp;", " ");
+        assertThat(acceleration2, containsString(arg1));
     }
 
     @When("^l'autonomie est \"([^\"]*)\"$")
     public void l_autonomie_est(String arg1) throws Throwable {
-        WebElement autonomie = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[1]/div[2]/ul/li[1]/span[2]"));
-        String autonomie2 = autonomie.getAttribute("innerHTML");
+        WebElement autonomie;
+        String autonomie2;
+        switch (arg1) {
+            case "580 km":
+                autonomie = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[2]/div[1]/ul/li[3]/span[2]"));
+                break;
+            case "430 km":
+                autonomie = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[3]/div[1]/ul/li[3]/span[2]"));
+                break;
+            default:
+                autonomie = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/section[8]/div/section/div/div[2]/div/div/section[1]/div[1]/ul/li[3]/span[2]"));
+                break;
+        }
+        autonomie2 = autonomie.getAttribute("innerHTML");
         assertEquals(arg1, autonomie2);
     }
 
 
     @After
     public void afterScenario() {
-        try{
+        try {
             Thread.sleep(5000);
             driver.quit();
         } catch (InterruptedException e) {
