@@ -29,9 +29,9 @@ public class HomepageSteps {
     @Before
     public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver","/Library/Java/JUNIT/chromedriver");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        driver = new ChromeDriver(options);
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+        driver = new ChromeDriver();
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -75,7 +75,7 @@ public class HomepageSteps {
     }
 
     @Then("^le lien associé à \"([^\"]*)\" est \"([^\"]*)\"$")
-    public void le_lien_associé_à_est(String arg1, String arg2) throws Throwable {
+    public void le_lien_associe_a_est(String arg1, String arg2) throws Throwable {
         WebElement nav = driver.findElement(By.className("tds-menu-header-nav--list"));
         List<WebElement> elementA = nav.findElements(By.tagName("a"));
         for (WebElement e : elementA) {

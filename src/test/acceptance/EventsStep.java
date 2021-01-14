@@ -32,9 +32,9 @@ public class EventsStep {
     @Before
     public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver","/Library/Java/JUNIT/chromedriver");
-         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        driver = new ChromeDriver(options);
+//         ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
+        driver = new ChromeDriver();
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);

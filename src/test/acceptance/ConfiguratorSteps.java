@@ -28,8 +28,8 @@ public class ConfiguratorSteps {
     @Before
     public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver", "/Library/Java/JUNIT/chromedriver");
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+//        ChromeOptions options = new ChromeOptions();
+//        options.addArguments("--headless");
         driver = new ChromeDriver();
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();
@@ -181,9 +181,6 @@ public class ConfiguratorSteps {
     public void je_clique_sur(String arg1) throws Throwable {
         try {
             Thread.sleep(5000);
-//            Actions actions = new Actions(driver);
-//            actions.sendKeys(Keys.ARROW_DOWN).build();
-//            actions.perform();
             try {
                 Thread.sleep(3000);
                 Actions click = new Actions(driver);
