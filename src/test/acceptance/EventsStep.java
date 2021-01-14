@@ -2,9 +2,12 @@ package test.acceptance;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.cs.A;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java.en_old.Ac;
+import gherkin.lexer.Th;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -12,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -105,6 +109,131 @@ public class EventsStep {
         }
         assertEquals(arg1,count);
     }
+
+    @Then("^il y a un lien Voir tous les événements$")
+    public void il_y_a_un_lien_Voir_tous_les_événements() throws Throwable {
+        WebElement lienAllEvents = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[1]/div[3]/div/form/div/div/span/a"));
+        lienAllEvents.isDisplayed();
+    }
+
+    @Then("^il y a un lien Afficher plus$")
+    public void il_y_a_un_lien_Afficher_plus() throws Throwable {
+        WebElement lienShowMore = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[1]/div[7]/div/div/div[3]/ul/li/a"));
+        lienShowMore.isDisplayed();
+    }
+
+    @Then("^il y a le champs \"([^\"]*)\"$")
+    public void il_y_a_le_champs(String arg1) throws Throwable {
+        WebElement form = driver.findElement(By.id("test-drive-form"));
+        List<WebElement> list_champs = form.findElements(By.tagName("label"));
+        for (WebElement e : list_champs){
+            if(arg1.equals("Recevoir les News Tesla")){
+                WebElement span = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[2]/div/div[1]/div/div/form/div/div[1]/div[8]/div/div/label/span"));
+                assertThat(span.getAttribute("innerHTML"), containsString(arg1));
+            }
+            if(e.getText().contains(arg1)) {
+                assertThat(e.getText(), containsString(arg1));
+            }
+            e.isDisplayed();
+
+        }
+    }
+
+    @Then("^il y a un bouton \"([^\"]*)\"$")
+    public void il_y_a_un_bouton(String arg1) throws Throwable {
+        WebElement submitButton = driver.findElement(By.id("edit-submit-td-ajax"));
+        assertEquals(arg1, submitButton.getAttribute("value"));
+        submitButton.isDisplayed();
+    }
+
+
+    @Then("^je saisi le prénom \"([^\"]*)\"$")
+    public void je_saisi_le_prénom(String arg1) throws Throwable {
+        try {
+            Thread.sleep(6000);
+            WebElement form = driver.findElement(By.id("test-drive-form"));
+            WebElement prenom = form.findElement(By.id("edit-firstname-td"));
+            Actions action = new Actions(driver);
+            action.sendKeys(prenom, arg1);
+            action.build().perform();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Then("^je saisi le nom \"([^\"]*)\"$")
+    public void je_saisi_le_nom(String arg1) throws Throwable {
+        try {
+            Thread.sleep(2000);
+            WebElement form = driver.findElement(By.id("test-drive-form"));
+            WebElement nom = form.findElement(By.id("edit-lastname-td"));
+            Actions action = new Actions(driver);
+            action.sendKeys(nom, arg1);
+            action.build().perform();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Then("^je saisi le téléphone \"([^\"]*)\"$")
+    public void je_saisi_le_téléphone(String arg1) throws Throwable {
+        try {
+            Thread.sleep(2000);
+            WebElement form = driver.findElement(By.id("test-drive-form"));
+            WebElement telephone = form.findElement(By.id("edit-phonenumber-td"));
+            Actions action = new Actions(driver);
+            action.sendKeys(telephone, arg1);
+            action.build().perform();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Then("^je saisi le region \"([^\"]*)\"$")
+    public void je_saisi_le_region(String arg1) throws Throwable {
+        try {
+            Thread.sleep(2000);
+            WebElement form = driver.findElement(By.id("test-drive-form"));
+            Select region = new Select(form.findElement(By.name("countries_td")));
+            region.selectByVisibleText(arg1);
+            //        Actions action = new Actions(driver);
+            //        action.sendKeys(prenom, arg1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Then("^je saisi le code postal \"([^\"]*)\"$")
+    public void je_saisi_le_code_postal(String arg1) throws Throwable {
+        try {
+            Thread.sleep(2000);
+            WebElement form = driver.findElement(By.id("test-drive-form"));
+            WebElement code_postal = form.findElement(By.id("edit-zipcode-td"));
+            Actions action = new Actions(driver);
+            action.sendKeys(code_postal, arg1);
+            action.build().perform();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @When("^je clique sur suivant$")
+    public void je_clique_sur_suivant() throws Throwable {
+        WebElement submitButton = driver.findElement(By.id("edit-submit-td-ajax"));
+        Actions actions = new Actions(driver);
+        actions.click(submitButton);
+        actions.build().perform();
+
+    }
+
+    @Then("^un message rouge apparaît avec le mot \"([^\"]*)\"$")
+    public void un_message_rouge_apparaît_avec_le_mot(String arg1) throws Throwable {
+        WebElement redMessage = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[2]/div/div[1]/div/div/form/div/div[1]/div[4]/div/ul/li"));
+        redMessage.isDisplayed();
+        assertEquals(arg1, redMessage.getAttribute("innerHTML"));
+    }
+
 
 
 
