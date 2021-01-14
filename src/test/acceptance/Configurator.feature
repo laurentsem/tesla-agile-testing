@@ -30,4 +30,4 @@ Feature: Configurateur Model S
     When je clique sur le logo Tesla en haut à gauche
     Then je suis sur la page d'accueil
     When je clique sur "Localisations"
-    Then j'arrive sur la page "https://www.tesla.com/fr_fr/findus/list"
+    Then j'arrive sur la page "https://www.tesla.com/fr_FR/findus/list"
