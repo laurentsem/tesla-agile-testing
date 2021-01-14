@@ -31,7 +31,7 @@ public class ConfiguratorSteps {
         System.setProperty("webdriver.chrome.driver","/Library/Java/JUNIT/chromedriver");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -91,22 +91,27 @@ public class ConfiguratorSteps {
 
     @Then("^le prix LOA est \"([^\"]*)\", \"([^\"]*)\" d'économies de carburant$")
     public void le_prix_LOA_est_d_économies_de_carburant(String arg1, String arg2) throws Throwable {
-        WebElement price = driver.findElement(By.xpath("/html/body/div[1]/div/main/div/div/div[3]/div/div/div/div[2]/div[1]/div/p"));
-        WebElement savingCarburant = driver.findElement(By.xpath("/html/body/div[1]/div/main/div/div/div[3]/div/div/div/div[2]/div[2]/p"));
-        System.out.println("Prix LOA:" + price.getText());
-        System.out.println("Economies carburant:" + savingCarburant.getText());
-        assertThat(price.getText(), containsString(arg1));
-        assertThat(savingCarburant.getText(), containsString(arg2));
+        try{
+            Thread.sleep(5000);
+            WebElement price = driver.findElement(By.xpath("/html/body/div[1]/div/main/div/div/div[3]/div/div/div/div[2]/div[1]/div/p"));
+            WebElement savingCarburant = driver.findElement(By.xpath("/html/body/div[1]/div/main/div/div/div[3]/div/div/div/div[2]/div[2]/p"));
+            System.out.println("Prix LOA:" + price.getAttribute("innerHTML"));
+            System.out.println("Economies carburant:" + savingCarburant.getAttribute("innerHTML"));
+            assertThat(price.getAttribute("innerHTML"), containsString(arg1));
+            assertThat(savingCarburant.getAttribute("innerHTML"), containsString(arg2));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @When("^je clique sur Voir détails$")
     public void je_clique_sur_Voir_détails() throws Throwable {
         try {
+            Thread.sleep(2000);
             Actions action = new Actions(driver);
             WebElement detailsButton = driver.findElement(By.className("finance-content--modal"));
             action.click(detailsButton);
             action.build().perform();
-            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -114,6 +119,7 @@ public class ConfiguratorSteps {
 
     @Then("^le montant total est de \"([^\"]*)\"$")
     public void le_montant_total_est_de(String arg1) throws Throwable {
+        Thread.sleep(2000);
         WebElement totalPrice = driver.findElement(By.id("totalLeaseAmount"));
         assertThat(totalPrice.getAttribute("value"), containsString(arg1));
     }
@@ -176,7 +182,7 @@ public class ConfiguratorSteps {
     @When("^je clique sur \"([^\"]*)\"$")
     public void je_clique_sur(String arg1) throws Throwable {
         try{
-            Thread.sleep(3000);
+            Thread.sleep(5000);
             Actions actions = new Actions(driver);
             JavascriptExecutor js = (JavascriptExecutor) driver;
             WebElement FOOTER = driver.findElement(By.tagName("footer"));
