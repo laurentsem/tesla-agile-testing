@@ -5,6 +5,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import gherkin.lexer.Th;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -28,9 +29,9 @@ public class ConfiguratorSteps {
     @Before
     public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver","/Library/Java/JUNIT/chromedriver");
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -148,14 +149,17 @@ public class ConfiguratorSteps {
     public void je_clique_sur_le_logo_Tesla_en_haut_à_gauche() throws Throwable {
         Actions actions = new Actions(driver);
         WebElement logo = driver.findElement(By.cssSelector("a[class='tsla-header-main--logo tds-icon tds-icon-wordmark']"));
-        String href = logo.getAttribute("href");
-//        driver.get(href+"fr_fr");
         actions.click(logo);
         actions.build().perform();
-        WebElement redirect = driver.findElement(By.xpath("/html/body/dialog/section/main/div/div[2]/ul/li[9]/a"));
-        Actions actions1 = new Actions(driver);
-        actions1.click(redirect);
-        actions1.build().perform();
+        try {
+            Thread.sleep(3000);
+            WebElement redirect = driver.findElement(By.xpath("/html/body/dialog/section/main/div/div[2]/ul/li[9]/a"));
+            Actions actions1 = new Actions(driver);
+            actions1.click(redirect);
+            actions1.build().perform();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Then("^j'arrive sur la page \"([^\"]*)\"$")
