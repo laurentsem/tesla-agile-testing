@@ -1,19 +1,19 @@
 Feature: Page d'accueil
-#  Scenario: Vérification du titre et de la description
-#    Given je suis sur la page d'accueil
-#    Then le titre doit être "Voitures électriques, énergie solaire et propre | Tesla France"
-#    And la description doit être "Tesla accélère la transition mondiale vers une énergie durable en proposant des véhicules électriques, des panneaux solaires et des solutions intégrées d'énergie renouvelable pour les particuliers et les entreprises."
-#
-#  Scenario Outline: Vérification punchline h1
-#    Given je suis sur la page d'accueil
-#    Then la punchline principale est "<punchline>"
-#    Examples:
-#      |punchline                                 |
-#      |Model 3                                   |
-#      |Model S                                   |
-#      |Model X                                   |
-#      |Model Y                                   |
-#      |Systèmes d'énergie solaire et Powerwalls  |
+  Scenario: Vérification du titre et de la description
+    Given je suis sur la page d'accueil
+    Then le titre doit être "Voitures électriques, énergie solaire et propre | Tesla France"
+    And la description doit être "Tesla accélère la transition mondiale vers une énergie durable en proposant des véhicules électriques, des panneaux solaires et des solutions intégrées d'énergie renouvelable pour les particuliers et les entreprises."
+
+  Scenario Outline: Vérification punchline h1
+    Given je suis sur la page d'accueil
+    Then la punchline principale est "<punchline>"
+    Examples:
+      |punchline                                 |
+      |Model 3                                   |
+      |Model S                                   |
+      |Model X                                   |
+      |Model Y                                   |
+      |Systèmes d'énergie solaire et Powerwalls  |
 
   Scenario Outline: Vérification menus et liens
     Given je suis sur la page d'accueil
@@ -28,20 +28,20 @@ Feature: Page d'accueil
       | Powerwall | https://www.tesla.com/fr_fr/powerwall |
       | Recharger | https://www.tesla.com/fr_FR/charging  |
 
-#  Scenario Outline: Vérification du menu burger
-#    Given je suis sur la page d'accueil
-#    When je clique sur le menu burger
-#    Then la catégorie est "<categorie>"
-#    Examples:
-#      | categorie |
-#      | Véhicules disponibles |
-#      | Véhicules d'occasion |
-#      | Reprise |
-#      | Cybertruck |
-#      | Roadster |
-#      | Énergie |
-#      | Essais |
-#      | Flottes et entreprises |
-#      | Nous trouver |
-#      | Événements |
-#      | Assistance |
+  Scenario Outline: Vérification du menu burger
+    Given je suis sur la page d'accueil
+    When je clique sur le menu burger
+    Then la catégorie est "<categorie>"
+    Examples:
+      | categorie |
+      | Véhicules disponibles |
+      | Véhicules d'occasion |
+      | Reprise |
+      | Cybertruck |
+      | Roadster |
+      | Énergie |
+      | Essais |
+      | Flottes et entreprises |
+      | Nous trouver |
+      | Événements |
+      | Assistance |

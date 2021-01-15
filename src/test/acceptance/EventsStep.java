@@ -32,9 +32,9 @@ public class EventsStep {
     @Before
     public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver","/Library/Java/JUNIT/chromedriver");
-//         ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
-        driver = new ChromeDriver();
+         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -231,6 +231,7 @@ public class EventsStep {
     public void un_message_rouge_apparaît_avec_le_mot(String arg1) throws Throwable {
         WebElement redMessage = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[2]/div/div[1]/div/div/form/div/div[1]/div[4]/div/ul/li"));
         redMessage.isDisplayed();
+        assertEquals(redMessage.getCssValue("color"), "rgba(183, 65, 52, 1)");
         assertEquals(arg1, redMessage.getAttribute("innerHTML"));
     }
 
@@ -250,17 +251,29 @@ public class EventsStep {
     @When("^je clique sur le bouton d'inscription$")
     public void je_clique_sur_le_bouton_d_inscription() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        Actions actions = new Actions(driver);
-        WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[1]/div[7]/div/div/div[2]/div[2]/div/div/div[2]/a"));
-        actions.click(button);
-        actions.build().perform();
+        try{
+            Thread.sleep(3000);
+            Actions actions = new Actions(driver);
+            WebElement button = driver.findElement(By.xpath("/html/body/div[2]/div/div[3]/div/main/div/div[1]/div/div/section[2]/div/div[1]/div[7]/div/div/div[2]/div[2]/div/div/div[2]/a"));
+            actions.click(button);
+            actions.build().perform();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+
+        }
     }
 
     @Then("^je vérifie que je suis rédirigé sur le lien \"([^\"]*)\"$")
     public void je_vérifie_que_je_suis_rédirigé_sur_le_lien(String arg1) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        String currentUrl = driver.getCurrentUrl();
-        assertThat(currentUrl,containsString(arg1));
+        try{
+            Thread.sleep(2000);
+            String currentUrl = driver.getCurrentUrl();
+            assertThat(currentUrl,containsString(arg1));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @After

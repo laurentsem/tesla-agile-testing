@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 
 import static org.hamcrest.Matchers.*;
@@ -29,8 +30,8 @@ public class Model3Steps {
     @Before
     public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver", "/Library/Java/JUNIT/chromedriver");
-        // ChromeOptions options = new ChromeOptions();
-        //options.addArguments("--headless");
+         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
         driver = new ChromeDriver();
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();

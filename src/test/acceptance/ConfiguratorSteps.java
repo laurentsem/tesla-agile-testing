@@ -28,9 +28,9 @@ public class ConfiguratorSteps {
     @Before
     public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver", "/Library/Java/JUNIT/chromedriver");
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
@@ -184,8 +184,8 @@ public class ConfiguratorSteps {
             try {
                 Thread.sleep(3000);
                 Actions click = new Actions(driver);
-                WebElement test = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/div/section/div[1]"));
-                click.click(test);
+                WebElement divClick = driver.findElement(By.xpath("/html/body/div[1]/main/div/div[2]/div/div/div/div/div/section/div[1]"));
+                click.click(divClick);
                 click.build().perform();
                 Actions actionProvider = new Actions(driver);
                 Action keydown = actionProvider.sendKeys(Keys.END).build();
@@ -200,7 +200,6 @@ public class ConfiguratorSteps {
                 for (WebElement li : listFooter) {
                     WebElement a = li.findElement(By.tagName("a"));
                     if (a.getAttribute("innerHTML").equals(arg1)) {
-                        System.out.println("coucou");
                         Actions actions = new Actions(driver);
                         actions.click(a);
                         actions.build().perform();

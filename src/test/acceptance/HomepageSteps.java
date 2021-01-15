@@ -29,9 +29,9 @@ public class HomepageSteps {
     @Before
     public void beforeScenario() {
         System.setProperty("webdriver.chrome.driver","/Library/Java/JUNIT/chromedriver");
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("--headless");
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
         // Seems no more working in last Chrome versions
         // driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
