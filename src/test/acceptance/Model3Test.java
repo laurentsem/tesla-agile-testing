@@ -7,9 +7,9 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = {"../src/test/acceptance/Homepage.feature"}, // ou se situe votre fichier .feature
+        features = {"../src/test/acceptance/Model3.feature"}, // ou se situe votre fichier .feature
         plugin = {"pretty"}
 )
-public class HomepageTest {
-
+public class Model3Test {
 }
+
